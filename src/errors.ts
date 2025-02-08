@@ -51,3 +51,40 @@ export const TASK_DB_CONNECTION_FAILED = 'task/db_connection_failed' as const;
  * Search keyword is required for search
 */
 export const KEYWORD_IS_REQUIRED = 'search/keyword is required for search' as const;
+
+
+/**
+ * Error while performing database operation
+*/
+export const ERROR_WHILE_DATABASE_OPERATION = 'database/error_while_database_operation' as const;
+
+
+
+/**
+ * Task status values for Swagger
+*/
+
+export const TASK_MESSAGES = {
+    CREATE_SUCCESS: 'Task created successfully.',
+    RETRIEVE_SUCCESS: 'Tasks retrieved successfully.',
+    UPDATE_SUCCESS: 'Task updated successfully.',
+    DELETE_SUCCESS: 'Task deleted successfully.',
+    COMPLETE_SUCCESS: 'Task marked as completed.',
+    SEARCH_SUCCESS: 'Search results retrieved successfully.',
+};
+
+export const ERROR_MESSAGES = {
+    BAD_REQUEST: 'Invalid input data or missing required fields.',
+    NOT_FOUND: 'The requested resource was not found.',
+    INTERNAL_SERVER_ERROR: 'Something went wrong on the server.',
+    KEYWORD_REQUIRED: 'Keyword query parameter is required.',
+};
+
+export const TASK_DESCRIPTIONS = {
+    CREATE: 'Create a new task in the system.',
+    RETRIEVE: 'Retrieve all tasks with their statuses.',
+    UPDATE: 'Update task details such as title, description, or due date.',
+    DELETE: 'Delete a task from the system.',
+    COMPLETE: 'Mark a task as completed and update its status.',
+    SEARCH: 'Search tasks by keywords in title or description.',
+};

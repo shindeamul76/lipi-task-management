@@ -4,7 +4,7 @@
    <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/cf/39/79/cf3979fe-a666-63f1-a7c3-84bf27e563a2/AppIcon-0-0-1x_U007emarketing-0-10-0-85-220.png/1200x600wa.png" alt="Logo">
   </a>
 
-  <h3 align="center">URL Shortner</h3>
+  <h3 align="center">Task Management API</h3>
 
   <p align="center">
     Become a Certified Career Planner.
@@ -13,6 +13,8 @@
     <br />
     <br />
     <a href="https://github.com/shindeamul76/lipi-task-management.git">Discussions</a>
+    ·
+    <a href="https://y86aal8k6g.execute-api.ap-south-1.amazonaws.com/dev/api-docs">Swagger UI</a>
     ·
     <a href="https://lipi.game/">Website</a>
     ·
@@ -237,13 +239,31 @@ yarn install
 
 ### **4. Run Database Migrations**
 ```sh
-yarn prisma migrate deploy
+yarn run prisma:deploy
 ```
 
-### **5. Start the Application**
+### **5. Apply Database Migrations Locally**
+```sh
+yarn run prisma:generate
+```
+
+### **6. Start the Application**
 ```sh
 yarn start 
 ```
+
+### **7. Prisma Studio**
+```sh
+yarn prisma:studio
+```
+
+### **8. Open Swagger UI**
+```sh
+http://localhost:4000/api-docs/   or  
+
+https://y86aal8k6g.execute-api.ap-south-1.amazonaws.com/dev/api-docs/
+```
+
 
 ---
 

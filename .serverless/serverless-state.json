@@ -112,7 +112,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-ap-south-1-2ed0840c-c696",
-                "S3Key": "serverless/task-management-api/dev/1739049132306-2025-02-08T21:12:12.306Z/task-management-api.zip"
+                "S3Key": "serverless/task-management-api/dev/1739053977282-2025-02-08T22:32:57.282Z/task-management-api.zip"
               },
               "Handler": "dist/lambda.handler",
               "Runtime": "nodejs20.x",
@@ -137,14 +137,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersionrqeK9Qxq8c4KCOO3WsE3OB9bbCy3hwcuZ4hW0cuIk": {
+          "ApiLambdaVersionwCl5tW9JjH4GIwLLrrgTWBguLLbMtyjy8kHWJCAbwSs": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "d+DeDjvrGJx3jdrC9DgJecK2Poiz2ndNBWZMavDtkBk="
+              "CodeSha256": "r8P+t/OQYBEdsPGE4Gu8WekEDl5Vr47gaHK4l6AVdiw="
             }
           },
           "ApiGatewayRestApi": {
@@ -265,7 +265,7 @@
               "ApiLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1739049120281": {
+          "ApiGatewayDeployment1739053965556": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -326,7 +326,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersionrqeK9Qxq8c4KCOO3WsE3OB9bbCy3hwcuZ4hW0cuIk"
+              "Ref": "ApiLambdaVersionwCl5tW9JjH4GIwLLrrgTWBguLLbMtyjy8kHWJCAbwSs"
             },
             "Export": {
               "Name": "sls-task-management-api-dev-ApiLambdaFunctionQualifiedArn"
@@ -402,7 +402,7 @@
         "timeout": 30,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "ApiLambdaVersionrqeK9Qxq8c4KCOO3WsE3OB9bbCy3hwcuZ4hW0cuIk"
+        "versionLogicalId": "ApiLambdaVersionwCl5tW9JjH4GIwLLrrgTWBguLLbMtyjy8kHWJCAbwSs"
       }
     },
     "configValidationMode": "warn",
@@ -429,7 +429,7 @@
         "artifactsS3KeyDirname": "serverless/task-management-api/dev/code-artifacts",
         "deploymentBucket": "serverless-framework-deployments-ap-south-1-2ed0840c-c696",
         "artifact": "/Users/amulshinde/Desktop/task-management/.serverless/task-management-api.zip",
-        "artifactDirectoryName": "serverless/task-management-api/dev/1739049132306-2025-02-08T21:12:12.306Z"
+        "artifactDirectoryName": "serverless/task-management-api/dev/1739053977282-2025-02-08T22:32:57.282Z"
       }
     },
     "appId": null,
@@ -438,7 +438,7 @@
     "artifact": "/Users/amulshinde/Desktop/task-management/.serverless/task-management-api.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/task-management-api/dev/1739049132306-2025-02-08T21:12:12.306Z",
+    "artifactDirectoryName": "serverless/task-management-api/dev/1739053977282-2025-02-08T22:32:57.282Z",
     "artifact": "task-management-api.zip"
   }
 }
