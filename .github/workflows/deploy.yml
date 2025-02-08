@@ -24,6 +24,9 @@ jobs:
         env:
           PRISMA_CLI_BINARY_TARGETS: rhel-openssl-3.0.x
 
+      - name: Set Serverless Access Key
+        run: echo "SLS_ACCESS_KEY=${{ secrets.SLS_ACCESS_KEY }}" >> $GITHUB_ENV
+
       - name: Deploy to AWS using Serverless Framework
         run: yarn serverless deploy
         env:
