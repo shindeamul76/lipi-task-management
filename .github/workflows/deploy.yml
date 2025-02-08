@@ -27,6 +27,7 @@ jobs:
       - name: Deploy to AWS using Serverless Framework
         run: yarn serverless deploy
         env:
+          SLS_ACCESS_KEY: ${{ secrets.SLS_ACCESS_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
