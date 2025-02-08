@@ -1,99 +1,268 @@
+<!-- PROJECT LOGO -->
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <a href="https://github.com/shindeamul76/lipi-task-management.git">
+   <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/cf/39/79/cf3979fe-a666-63f1-a7c3-84bf27e563a2/AppIcon-0-0-1x_U007emarketing-0-10-0-85-220.png/1200x600wa.png" alt="Logo">
+  </a>
+
+  <h3 align="center">URL Shortner</h3>
+
+  <p align="center">
+    Become a Certified Career Planner.
+    <br />
+    <a href="https://y86aal8k6g.execute-api.ap-south-1.amazonaws.com/dev/hello"><strong>Deployed Lambda URL»</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/shindeamul76/lipi-task-management.git">Discussions</a>
+    ·
+    <a href="https://lipi.game/">Website</a>
+    ·
+    <a href="https://github.com/shindeamul76/lipi-task-management.git/issues">Issues</a>
+    ·
+    <a href="https://lipi.game/">Roadmap</a>
+  </p>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# Task Management System API
 
-## Project setup
+## Overview
+A **Task Management System API** designed to manage tasks efficiently, allowing users to create, update, delete, search, and mark tasks as completed. This backend system is built using **Node.js** with **PostgreSQL** as the database and is deployed on **AWS Lambda with API Gateway**.
 
-```bash
-$ yarn install
+---
+
+## Features
+
+### 1. **Task Management**
+- Create, update, delete tasks.
+- Mark tasks as completed.
+- Search tasks by keywords.
+- Retrieve all tasks with calculated status.
+
+### 2. **Task Status Calculation**
+- **Pending:** Task is not started or due date is in the future.
+- **Due Today:** Task's `due_date` matches the current date.
+- **Overdue:** Task's `due_date` is before the current date and status is not `Completed`.
+- **Completed:** Task is manually marked as completed.
+
+### 3. **Error Handling & Validation**
+- Proper validation for input fields.
+- Meaningful error messages for failed operations.
+
+### 4. **Deployment**
+- Deployed on **AWS Lambda** with API Gateway.
+- Can also run locally using Node.js Express.
+
+---
+
+## Built With
+- **[Nest.js](https://nestjs.com/):** Backend framework.
+- **[PostgreSQL](https://www.postgresql.org/):** Relational database.
+- **[Prisma.io](https://www.prisma.io/):** Database ORM.
+- **[Swagger](https://swagger.io/):** API documentation.
+- **[AWS Lambda](https://aws.amazon.com/lambda/):** Serverless deployment.
+- **[Serverless Framework](https://www.serverless.com/):** Deployment automation.
+
+---
+
+## API Endpoints
+
+### **1. Create a Task**
+- **Endpoint:** `/tasks`
+- **Method:** `POST`
+- **Description:** Accepts `title`, `description`, and an optional `due_date` (defaults to 7 days from the current date if not provided).
+
+#### Request Body:
+```json
+{
+  "title": "Complete assignment",
+  "description": "Finish the backend assignment by the due date",
+  "due_date": "2025-02-15" (optional)
+}
+```
+#### Response:
+```json
+{
+  "id": 1,
+  "title": "Complete assignment",
+  "description": "Finish the backend assignment by the due date",
+  "due_date": "2025-02-15",
+  "status": "Pending",
+  "created_at": "2025-02-08T12:00:00.000Z",
+  "updated_at": "2025-02-08T12:00:00.000Z"
+}
 ```
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ yarn run start
+### **2. Retrieve All Tasks**
+- **Endpoint:** `/tasks`
+- **Method:** `GET`
+- **Description:** Fetch all tasks with their calculated status.
 
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+#### Response:
+```json
+[
+  {
+    "id": 1,
+    "title": "Complete assignment",
+    "description": "Finish the backend assignment by the due date",
+    "due_date": "2025-02-15",
+    "status": "Pending",
+    "created_at": "2025-02-08T12:00:00.000Z",
+    "updated_at": "2025-02-08T12:00:00.000Z"
+  }
+]
 ```
 
-## Run tests
+---
 
-```bash
-# unit tests
-$ yarn run test
+### **3. Update a Task**
+- **Endpoint:** `/tasks/{id}`
+- **Method:** `PUT`
+- **Description:** Update task details (`title`, `description`, `due_date`) and log previous values.
 
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+#### Request Body:
+```json
+{
+  "title": "Updated Task Title",
+  "description": "Updated Description"
+}
 ```
+
+#### Response:
+```json
+{
+  "message": "Task updated successfully"
+}
+```
+
+---
+
+### **4. Mark a Task as Completed**
+- **Endpoint:** `/tasks/{id}/complete`
+- **Method:** `PUT`
+- **Description:** Marks the task as completed and updates the `completed_at` timestamp.
+
+#### Response:
+```json
+{
+  "message": "Task marked as completed"
+}
+```
+
+---
+
+### **5. Delete a Task**
+- **Endpoint:** `/tasks/{id}`
+- **Method:** `DELETE`
+- **Description:** Deletes a task and returns the deleted task's details.
+
+#### Response:
+```json
+{
+  "message": "Task deleted successfully"
+}
+```
+
+---
+
+### **6. Search Tasks (Bonus)**
+- **Endpoint:** `/tasks/search`
+- **Method:** `GET`
+- **Query Params:** `q` (search keyword for title or description)
+
+#### Example Request:
+```
+GET /tasks/search?q=assignment
+```
+
+#### Response:
+```json
+[
+  {
+    "id": 1,
+    "title": "Complete assignment",
+    "description": "Finish the backend assignment by the due date",
+    "status": "Pending"
+  }
+]
+```
+
+---
+
+## Database Schema
+```sql
+enum TaskStatus {
+  Completed
+  Pending
+  Overdue
+  DueToday
+}
+
+model Task {
+  id           Int        @id @default(autoincrement())
+  title        String
+  description  String?
+  due_date     DateTime
+  status       TaskStatus @default(Pending)
+  completed_at DateTime?
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
+}
+```
+
+---
+
+## Getting Started
+
+### **1. Clone the Repository**
+```sh
+git clone https://github.com/shindeamul76/lipi-task-management.git
+cd task-management
+```
+
+### **2. Install Dependencies**
+```sh
+yarn install
+```
+
+### **3. Configure Environment Variables**
+- Duplicate `.env.example` to `.env` and update:
+  ```sh
+  cp .env.example .env
+  ```
+  - Set `DATABASE_URL` for PostgreSQL connection.
+
+### **4. Run Database Migrations**
+```sh
+yarn prisma migrate deploy
+```
+
+### **5. Start the Application**
+```sh
+yarn start 
+```
+
+---
 
 ## Deployment
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ yarn install -g mau
-$ mau deploy
+### **Build & Deploy**
+```sh
+yarn build
+```
+### **AWS Lambda Deployment (Serverless Framework)**
+```sh
+yarn serverless deploy
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### **Local Setup**
+To run locally using Node.js:
+```sh
+yarn start
+```
 
-## Resources
 
-Check out a few resources that may come in handy when working with NestJS:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
