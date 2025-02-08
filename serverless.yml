@@ -1,0 +1,42 @@
+service: task-management-api 
+
+plugins:
+  - serverless-plugin-optimize
+  - serverless-offline
+  - serverless-jetpack
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-south-1
+  memorySize: 2048
+  timeout: 20 
+  stage: "dev" 
+  environment:
+    DATABASE_URL: ${ssm:/task-management-api/DATABASE_URL} 
+    NODE_ENV: development
+
+package:
+  individually: true
+  exclude:
+    - node_modules/**
+    - src/**
+    - test/**
+    - .git/**
+    - .serverless/**
+  include:
+    - node_modules/binary-case/** 
+    - node_modules/@vendia/serverless-express/**
+    - node_modules/aws-serverless-express/** 
+    - node_modules/@nestjs/** 
+    - dist/**
+
+functions:
+  api:
+    handler: dist/lambda.handler
+    description: Task Management API powered by NestJS
+    events:
+      - http:
+          path: /api/{proxy+}
+          method: any
+          cors: true
