@@ -19,7 +19,7 @@
         "timeout": 30,
         "environment": {
           "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&connection_limit=1",
-          "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-1.0.x",
+          "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-3.0.x",
           "PORT": "4000"
         },
         "versionFunctions": true,
@@ -117,7 +117,7 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "serverless-framework-deployments-ap-south-1-2ed0840c-c696",
-                  "S3Key": "serverless/task-management-api/dev/1739042434354-2025-02-08T19:20:34.354Z/task-management-api.zip"
+                  "S3Key": "serverless/task-management-api/dev/1739049132306-2025-02-08T21:12:12.306Z/task-management-api.zip"
                 },
                 "Handler": "dist/lambda.handler",
                 "Runtime": "nodejs20.x",
@@ -127,7 +127,7 @@
                 "Environment": {
                   "Variables": {
                     "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&connection_limit=1",
-                    "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-1.0.x",
+                    "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-3.0.x",
                     "PORT": "4000"
                   }
                 },
@@ -142,14 +142,14 @@
                 "ApiLogGroup"
               ]
             },
-            "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc": {
+            "ApiLambdaVersionrqeK9Qxq8c4KCOO3WsE3OB9bbCy3hwcuZ4hW0cuIk": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "ApiLambdaFunction"
                 },
-                "CodeSha256": "YTwLCSXBfst/YpV9UeJL6D2IJFIkp8XIbNAtEsQYKb0="
+                "CodeSha256": "d+DeDjvrGJx3jdrC9DgJecK2Poiz2ndNBWZMavDtkBk="
               }
             },
             "ApiGatewayRestApi": {
@@ -270,7 +270,7 @@
                 "ApiLambdaPermissionApiGateway"
               ]
             },
-            "ApiGatewayDeployment1739042424170": {
+            "ApiGatewayDeployment1739049120281": {
               "Type": "AWS::ApiGateway::Deployment",
               "Properties": {
                 "RestApiId": {
@@ -331,7 +331,7 @@
             "ApiLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc"
+                "Ref": "ApiLambdaVersionrqeK9Qxq8c4KCOO3WsE3OB9bbCy3hwcuZ4hW0cuIk"
               },
               "Export": {
                 "Name": "sls-task-management-api-dev-ApiLambdaFunctionQualifiedArn"
@@ -402,7 +402,7 @@
           "timeout": 30,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc"
+          "versionLogicalId": "ApiLambdaVersionrqeK9Qxq8c4KCOO3WsE3OB9bbCy3hwcuZ4hW0cuIk"
         }
       },
       "package": {
@@ -416,7 +416,7 @@
         "artifactsS3KeyDirname": "serverless/task-management-api/dev/code-artifacts",
         "deploymentBucket": "serverless-framework-deployments-ap-south-1-2ed0840c-c696",
         "artifact": "/Users/amulshinde/Desktop/task-management/.serverless/task-management-api.zip",
-        "artifactDirectoryName": "serverless/task-management-api/dev/1739042434354-2025-02-08T19:20:34.354Z"
+        "artifactDirectoryName": "serverless/task-management-api/dev/1739049132306-2025-02-08T21:12:12.306Z"
       }
     },
     "provider": {
@@ -429,7 +429,7 @@
       "timeout": 30,
       "environment": {
         "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&connection_limit=1",
-        "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-1.0.x",
+        "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-3.0.x",
         "PORT": "4000"
       },
       "versionFunctions": true,
@@ -527,7 +527,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-ap-south-1-2ed0840c-c696",
-                "S3Key": "serverless/task-management-api/dev/1739042434354-2025-02-08T19:20:34.354Z/task-management-api.zip"
+                "S3Key": "serverless/task-management-api/dev/1739049132306-2025-02-08T21:12:12.306Z/task-management-api.zip"
               },
               "Handler": "dist/lambda.handler",
               "Runtime": "nodejs20.x",
@@ -537,7 +537,7 @@
               "Environment": {
                 "Variables": {
                   "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&connection_limit=1",
-                  "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-1.0.x",
+                  "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-3.0.x",
                   "PORT": "4000"
                 }
               },
@@ -552,14 +552,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc": {
+          "ApiLambdaVersionrqeK9Qxq8c4KCOO3WsE3OB9bbCy3hwcuZ4hW0cuIk": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "YTwLCSXBfst/YpV9UeJL6D2IJFIkp8XIbNAtEsQYKb0="
+              "CodeSha256": "d+DeDjvrGJx3jdrC9DgJecK2Poiz2ndNBWZMavDtkBk="
             }
           },
           "ApiGatewayRestApi": {
@@ -680,7 +680,7 @@
               "ApiLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1739042424170": {
+          "ApiGatewayDeployment1739049120281": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -741,7 +741,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc"
+              "Ref": "ApiLambdaVersionrqeK9Qxq8c4KCOO3WsE3OB9bbCy3hwcuZ4hW0cuIk"
             },
             "Export": {
               "Name": "sls-task-management-api-dev-ApiLambdaFunctionQualifiedArn"
@@ -914,7 +914,7 @@
           "Properties": {
             "Code": {
               "S3Bucket": "serverless-framework-deployments-ap-south-1-2ed0840c-c696",
-              "S3Key": "serverless/task-management-api/dev/1739042434354-2025-02-08T19:20:34.354Z/task-management-api.zip"
+              "S3Key": "serverless/task-management-api/dev/1739049132306-2025-02-08T21:12:12.306Z/task-management-api.zip"
             },
             "Handler": "dist/lambda.handler",
             "Runtime": "nodejs20.x",
@@ -924,7 +924,7 @@
             "Environment": {
               "Variables": {
                 "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&connection_limit=1",
-                "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-1.0.x",
+                "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-3.0.x",
                 "PORT": "4000"
               }
             },
@@ -939,14 +939,14 @@
             "ApiLogGroup"
           ]
         },
-        "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc": {
+        "ApiLambdaVersionrqeK9Qxq8c4KCOO3WsE3OB9bbCy3hwcuZ4hW0cuIk": {
           "Type": "AWS::Lambda::Version",
           "DeletionPolicy": "Retain",
           "Properties": {
             "FunctionName": {
               "Ref": "ApiLambdaFunction"
             },
-            "CodeSha256": "YTwLCSXBfst/YpV9UeJL6D2IJFIkp8XIbNAtEsQYKb0="
+            "CodeSha256": "d+DeDjvrGJx3jdrC9DgJecK2Poiz2ndNBWZMavDtkBk="
           }
         },
         "ApiGatewayRestApi": {
@@ -1067,7 +1067,7 @@
             "ApiLambdaPermissionApiGateway"
           ]
         },
-        "ApiGatewayDeployment1739042424170": {
+        "ApiGatewayDeployment1739049120281": {
           "Type": "AWS::ApiGateway::Deployment",
           "Properties": {
             "RestApiId": {
@@ -1128,7 +1128,7 @@
         "ApiLambdaFunctionQualifiedArn": {
           "Description": "Current Lambda function version",
           "Value": {
-            "Ref": "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc"
+            "Ref": "ApiLambdaVersionrqeK9Qxq8c4KCOO3WsE3OB9bbCy3hwcuZ4hW0cuIk"
           },
           "Export": {
             "Name": "sls-task-management-api-dev-ApiLambdaFunctionQualifiedArn"

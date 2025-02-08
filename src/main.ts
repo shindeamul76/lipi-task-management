@@ -13,18 +13,8 @@ function setupSwagger(app) {
     .setTitle('Task Management API Documentation')
     .setDescription('APIs for Task Management')
     .setVersion('1.0')
-
-    .addApiKey(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-      },
-      'JWT Token',
-    )
     .addTag('Task Management')
     .build();
-    // .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(swaggerDocPath, app, documentFactory, {
