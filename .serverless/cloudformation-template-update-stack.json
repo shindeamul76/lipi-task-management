@@ -5,7 +5,8 @@
     "ApiLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/task-management-api-dev-api"
+        "LogGroupName": "/aws/lambda/task-management-api-dev-api",
+        "RetentionInDays": 5
       }
     },
     "IamRoleLambdaExecution": {
@@ -91,18 +92,18 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-ap-south-1-2ed0840c-c696",
-          "S3Key": "serverless/task-management-api/dev/1738931408574-2025-02-07T12:30:08.574Z/api.zip"
+          "S3Key": "serverless/task-management-api/dev/1739042434354-2025-02-08T19:20:34.354Z/task-management-api.zip"
         },
         "Handler": "dist/lambda.handler",
         "Runtime": "nodejs20.x",
         "FunctionName": "task-management-api-dev-api",
         "MemorySize": 2048,
-        "Timeout": 20,
-        "Description": "Task Management API powered by NestJS",
+        "Timeout": 30,
         "Environment": {
           "Variables": {
-            "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require",
-            "NODE_ENV": "development"
+            "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&connection_limit=1",
+            "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-1.0.x",
+            "PORT": "4000"
           }
         },
         "Role": {
@@ -116,15 +117,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersionRJdasWDH4oJFhsjWXnZUSc0UasByM9ZbN8X5Dc4BYmU": {
+    "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "zE8qdhh//eZNcfC6Bq4aqmtvJcEKFwpuTAPcSEg05qk=",
-        "Description": "Task Management API powered by NestJS"
+        "CodeSha256": "YTwLCSXBfst/YpV9UeJL6D2IJFIkp8XIbNAtEsQYKb0="
       }
     },
     "ApiGatewayRestApi": {
@@ -139,7 +139,7 @@
         "Policy": ""
       }
     },
-    "ApiGatewayResourceApi": {
+    "ApiGatewayResourceProxyVar": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
@@ -148,25 +148,13 @@
             "RootResourceId"
           ]
         },
-        "PathPart": "api",
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        }
-      }
-    },
-    "ApiGatewayResourceApiProxyVar": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Ref": "ApiGatewayResourceApi"
-        },
         "PathPart": "{proxy+}",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodApiProxyVarOptions": {
+    "ApiGatewayMethodProxyVarOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -204,20 +192,20 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceApiProxyVar"
+          "Ref": "ApiGatewayResourceProxyVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodApiProxyVarAny": {
+    "ApiGatewayMethodProxyVarAny": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "ANY",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceApiProxyVar"
+          "Ref": "ApiGatewayResourceProxyVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -257,7 +245,7 @@
         "ApiLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1738931402020": {
+    "ApiGatewayDeployment1739042424170": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -266,8 +254,8 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodApiProxyVarOptions",
-        "ApiGatewayMethodApiProxyVarAny"
+        "ApiGatewayMethodProxyVarOptions",
+        "ApiGatewayMethodProxyVarAny"
       ]
     },
     "ApiLambdaPermissionApiGateway": {
@@ -318,7 +306,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersionRJdasWDH4oJFhsjWXnZUSc0UasByM9ZbN8X5Dc4BYmU"
+        "Ref": "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc"
       },
       "Export": {
         "Name": "sls-task-management-api-dev-ApiLambdaFunctionQualifiedArn"

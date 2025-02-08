@@ -1,41 +1,17 @@
-// lambda.ts
-import { Handler, Context } from 'aws-lambda';
-import { Server } from 'http';
-import { createServer, proxy } from 'aws-serverless-express';
-import { eventContext } from 'aws-serverless-express/middleware';
-
+import { configure as serverlessExpress } from '@vendia/serverless-express';
 import { NestFactory } from '@nestjs/core';
-import { ExpressAdapter } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const express = require('express');
+let cachedServer;
 
-// NOTE: If you get ERR_CONTENT_DECODING_FAILED in your browser, this is likely
-// due to a compressed response (e.g. gzip) which has not been handled correctly
-// by aws-serverless-express and/or API Gateway. Add the necessary MIME types to
-// binaryMimeTypes below
-const binaryMimeTypes: string[] = [];
-
-let cachedServer: Server;
-
-async function bootstrapServer(): Promise<Server> {
+export const handler = async (event, context) => {
   if (!cachedServer) {
-    const expressApp = express();
-    const nestApp = await NestFactory.create(
-      AppModule,
-      new ExpressAdapter(expressApp),
-    );
-    nestApp.use(eventContext());
-    nestApp.setGlobalPrefix('api');
+    const nestApp = await NestFactory.create(AppModule);
     await nestApp.init();
-    cachedServer = createServer(expressApp, undefined, binaryMimeTypes);
+    cachedServer = serverlessExpress({
+      app: nestApp.getHttpAdapter().getInstance(),
+    });
   }
-  return cachedServer;
-}
 
-export const handler: Handler = async (event: any, context: Context) => {
-  cachedServer = await bootstrapServer();
-  return proxy(cachedServer, event, context, 'PROMISE').promise;
+  return cachedServer(event, context);
 };

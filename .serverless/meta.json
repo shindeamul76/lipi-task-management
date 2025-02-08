@@ -6,20 +6,21 @@
     "service": {
       "service": "task-management-api",
       "plugins": [
-        "serverless-plugin-optimize",
         "serverless-offline",
-        "serverless-jetpack"
+        "serverless-dotenv-plugin"
       ],
       "provider": {
         "name": "aws",
         "runtime": "nodejs20.x",
+        "stage": "dev",
         "region": "ap-south-1",
         "memorySize": 2048,
-        "timeout": 20,
-        "stage": "dev",
+        "logRetentionInDays": 5,
+        "timeout": 30,
         "environment": {
-          "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require",
-          "NODE_ENV": "development"
+          "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&connection_limit=1",
+          "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-1.0.x",
+          "PORT": "4000"
         },
         "versionFunctions": true,
         "compiledCloudFormationTemplate": {
@@ -29,7 +30,8 @@
             "ApiLogGroup": {
               "Type": "AWS::Logs::LogGroup",
               "Properties": {
-                "LogGroupName": "/aws/lambda/task-management-api-dev-api"
+                "LogGroupName": "/aws/lambda/task-management-api-dev-api",
+                "RetentionInDays": 5
               }
             },
             "IamRoleLambdaExecution": {
@@ -115,18 +117,18 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "serverless-framework-deployments-ap-south-1-2ed0840c-c696",
-                  "S3Key": "serverless/task-management-api/dev/1738931408574-2025-02-07T12:30:08.574Z/api.zip"
+                  "S3Key": "serverless/task-management-api/dev/1739042434354-2025-02-08T19:20:34.354Z/task-management-api.zip"
                 },
                 "Handler": "dist/lambda.handler",
                 "Runtime": "nodejs20.x",
                 "FunctionName": "task-management-api-dev-api",
                 "MemorySize": 2048,
-                "Timeout": 20,
-                "Description": "Task Management API powered by NestJS",
+                "Timeout": 30,
                 "Environment": {
                   "Variables": {
-                    "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require",
-                    "NODE_ENV": "development"
+                    "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&connection_limit=1",
+                    "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-1.0.x",
+                    "PORT": "4000"
                   }
                 },
                 "Role": {
@@ -140,15 +142,14 @@
                 "ApiLogGroup"
               ]
             },
-            "ApiLambdaVersionRJdasWDH4oJFhsjWXnZUSc0UasByM9ZbN8X5Dc4BYmU": {
+            "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "ApiLambdaFunction"
                 },
-                "CodeSha256": "zE8qdhh//eZNcfC6Bq4aqmtvJcEKFwpuTAPcSEg05qk=",
-                "Description": "Task Management API powered by NestJS"
+                "CodeSha256": "YTwLCSXBfst/YpV9UeJL6D2IJFIkp8XIbNAtEsQYKb0="
               }
             },
             "ApiGatewayRestApi": {
@@ -163,7 +164,7 @@
                 "Policy": ""
               }
             },
-            "ApiGatewayResourceApi": {
+            "ApiGatewayResourceProxyVar": {
               "Type": "AWS::ApiGateway::Resource",
               "Properties": {
                 "ParentId": {
@@ -172,25 +173,13 @@
                     "RootResourceId"
                   ]
                 },
-                "PathPart": "api",
-                "RestApiId": {
-                  "Ref": "ApiGatewayRestApi"
-                }
-              }
-            },
-            "ApiGatewayResourceApiProxyVar": {
-              "Type": "AWS::ApiGateway::Resource",
-              "Properties": {
-                "ParentId": {
-                  "Ref": "ApiGatewayResourceApi"
-                },
                 "PathPart": "{proxy+}",
                 "RestApiId": {
                   "Ref": "ApiGatewayRestApi"
                 }
               }
             },
-            "ApiGatewayMethodApiProxyVarOptions": {
+            "ApiGatewayMethodProxyVarOptions": {
               "Type": "AWS::ApiGateway::Method",
               "Properties": {
                 "AuthorizationType": "NONE",
@@ -228,20 +217,20 @@
                   ]
                 },
                 "ResourceId": {
-                  "Ref": "ApiGatewayResourceApiProxyVar"
+                  "Ref": "ApiGatewayResourceProxyVar"
                 },
                 "RestApiId": {
                   "Ref": "ApiGatewayRestApi"
                 }
               }
             },
-            "ApiGatewayMethodApiProxyVarAny": {
+            "ApiGatewayMethodProxyVarAny": {
               "Type": "AWS::ApiGateway::Method",
               "Properties": {
                 "HttpMethod": "ANY",
                 "RequestParameters": {},
                 "ResourceId": {
-                  "Ref": "ApiGatewayResourceApiProxyVar"
+                  "Ref": "ApiGatewayResourceProxyVar"
                 },
                 "RestApiId": {
                   "Ref": "ApiGatewayRestApi"
@@ -281,7 +270,7 @@
                 "ApiLambdaPermissionApiGateway"
               ]
             },
-            "ApiGatewayDeployment1738931402020": {
+            "ApiGatewayDeployment1739042424170": {
               "Type": "AWS::ApiGateway::Deployment",
               "Properties": {
                 "RestApiId": {
@@ -290,8 +279,8 @@
                 "StageName": "dev"
               },
               "DependsOn": [
-                "ApiGatewayMethodApiProxyVarOptions",
-                "ApiGatewayMethodApiProxyVarAny"
+                "ApiGatewayMethodProxyVarOptions",
+                "ApiGatewayMethodProxyVarAny"
               ]
             },
             "ApiLambdaPermissionApiGateway": {
@@ -342,7 +331,7 @@
             "ApiLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "ApiLambdaVersionRJdasWDH4oJFhsjWXnZUSc0UasByM9ZbN8X5Dc4BYmU"
+                "Ref": "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc"
               },
               "Export": {
                 "Name": "sls-task-management-api-dev-ApiLambdaFunctionQualifiedArn"
@@ -378,35 +367,14 @@
         },
         "vpc": {}
       },
-      "package": {
-        "individually": true,
-        "exclude": [
-          "node_modules/**",
-          "src/**",
-          "test/**",
-          ".git/**",
-          ".serverless/**"
-        ],
-        "include": [
-          "node_modules/binary-case/**",
-          "node_modules/@vendia/serverless-express/**",
-          "node_modules/aws-serverless-express/**",
-          "node_modules/@nestjs/**",
-          "dist/**"
-        ],
-        "artifactsS3KeyDirname": "serverless/task-management-api/dev/code-artifacts",
-        "deploymentBucket": "serverless-framework-deployments-ap-south-1-2ed0840c-c696",
-        "artifactDirectoryName": "serverless/task-management-api/dev/1738931408574-2025-02-07T12:30:08.574Z"
-      },
       "functions": {
         "api": {
           "handler": "dist/lambda.handler",
-          "description": "Task Management API powered by NestJS",
           "events": [
             {
               "http": {
-                "path": "api/{proxy+}",
                 "method": "any",
+                "path": "{proxy+}",
                 "cors": {
                   "origin": "*",
                   "methods": [
@@ -429,27 +397,40 @@
             }
           ],
           "name": "task-management-api-dev-api",
-          "package": {
-            "artifact": ".serverless/api.zip"
-          },
+          "package": {},
           "memory": 2048,
-          "timeout": 20,
+          "timeout": 30,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "ApiLambdaVersionRJdasWDH4oJFhsjWXnZUSc0UasByM9ZbN8X5Dc4BYmU"
+          "versionLogicalId": "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc"
         }
+      },
+      "package": {
+        "patterns": [
+          "!node_modules/.prisma/client/libquery_engine-*",
+          "node_modules/.prisma/client/libquery_engine-rhel-*",
+          "!node_modules/prisma/libquery_engine-*",
+          "!node_modules/@prisma/engines/**",
+          "node_modules/@prisma/client/**"
+        ],
+        "artifactsS3KeyDirname": "serverless/task-management-api/dev/code-artifacts",
+        "deploymentBucket": "serverless-framework-deployments-ap-south-1-2ed0840c-c696",
+        "artifact": "/Users/amulshinde/Desktop/task-management/.serverless/task-management-api.zip",
+        "artifactDirectoryName": "serverless/task-management-api/dev/1739042434354-2025-02-08T19:20:34.354Z"
       }
     },
     "provider": {
       "name": "aws",
       "runtime": "nodejs20.x",
+      "stage": "dev",
       "region": "ap-south-1",
       "memorySize": 2048,
-      "timeout": 20,
-      "stage": "dev",
+      "logRetentionInDays": 5,
+      "timeout": 30,
       "environment": {
-        "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require",
-        "NODE_ENV": "development"
+        "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&connection_limit=1",
+        "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-1.0.x",
+        "PORT": "4000"
       },
       "versionFunctions": true,
       "compiledCloudFormationTemplate": {
@@ -459,7 +440,8 @@
           "ApiLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/task-management-api-dev-api"
+              "LogGroupName": "/aws/lambda/task-management-api-dev-api",
+              "RetentionInDays": 5
             }
           },
           "IamRoleLambdaExecution": {
@@ -545,18 +527,18 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-ap-south-1-2ed0840c-c696",
-                "S3Key": "serverless/task-management-api/dev/1738931408574-2025-02-07T12:30:08.574Z/api.zip"
+                "S3Key": "serverless/task-management-api/dev/1739042434354-2025-02-08T19:20:34.354Z/task-management-api.zip"
               },
               "Handler": "dist/lambda.handler",
               "Runtime": "nodejs20.x",
               "FunctionName": "task-management-api-dev-api",
               "MemorySize": 2048,
-              "Timeout": 20,
-              "Description": "Task Management API powered by NestJS",
+              "Timeout": 30,
               "Environment": {
                 "Variables": {
-                  "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require",
-                  "NODE_ENV": "development"
+                  "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&connection_limit=1",
+                  "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-1.0.x",
+                  "PORT": "4000"
                 }
               },
               "Role": {
@@ -570,15 +552,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersionRJdasWDH4oJFhsjWXnZUSc0UasByM9ZbN8X5Dc4BYmU": {
+          "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "zE8qdhh//eZNcfC6Bq4aqmtvJcEKFwpuTAPcSEg05qk=",
-              "Description": "Task Management API powered by NestJS"
+              "CodeSha256": "YTwLCSXBfst/YpV9UeJL6D2IJFIkp8XIbNAtEsQYKb0="
             }
           },
           "ApiGatewayRestApi": {
@@ -593,7 +574,7 @@
               "Policy": ""
             }
           },
-          "ApiGatewayResourceApi": {
+          "ApiGatewayResourceProxyVar": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
               "ParentId": {
@@ -602,25 +583,13 @@
                   "RootResourceId"
                 ]
               },
-              "PathPart": "api",
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              }
-            }
-          },
-          "ApiGatewayResourceApiProxyVar": {
-            "Type": "AWS::ApiGateway::Resource",
-            "Properties": {
-              "ParentId": {
-                "Ref": "ApiGatewayResourceApi"
-              },
               "PathPart": "{proxy+}",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
             }
           },
-          "ApiGatewayMethodApiProxyVarOptions": {
+          "ApiGatewayMethodProxyVarOptions": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "AuthorizationType": "NONE",
@@ -658,20 +627,20 @@
                 ]
               },
               "ResourceId": {
-                "Ref": "ApiGatewayResourceApiProxyVar"
+                "Ref": "ApiGatewayResourceProxyVar"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
             }
           },
-          "ApiGatewayMethodApiProxyVarAny": {
+          "ApiGatewayMethodProxyVarAny": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "HttpMethod": "ANY",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceApiProxyVar"
+                "Ref": "ApiGatewayResourceProxyVar"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -711,7 +680,7 @@
               "ApiLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1738931402020": {
+          "ApiGatewayDeployment1739042424170": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -720,8 +689,8 @@
               "StageName": "dev"
             },
             "DependsOn": [
-              "ApiGatewayMethodApiProxyVarOptions",
-              "ApiGatewayMethodApiProxyVarAny"
+              "ApiGatewayMethodProxyVarOptions",
+              "ApiGatewayMethodProxyVarAny"
             ]
           },
           "ApiLambdaPermissionApiGateway": {
@@ -772,7 +741,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersionRJdasWDH4oJFhsjWXnZUSc0UasByM9ZbN8X5Dc4BYmU"
+              "Ref": "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc"
             },
             "Export": {
               "Name": "sls-task-management-api-dev-ApiLambdaFunctionQualifiedArn"
@@ -817,7 +786,7 @@
       "serviceProvider": null,
       "instanceParameters": null
     },
-    "serviceRawFile": "service: task-management-api \n\nplugins:\n  - serverless-plugin-optimize\n  - serverless-offline\n  - serverless-jetpack\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: ap-south-1\n  memorySize: 2048\n  timeout: 20 \n  stage: \"dev\" \n  environment:\n    DATABASE_URL: ${ssm:/task-management-api/DATABASE_URL} \n    NODE_ENV: development\n\npackage:\n  individually: true\n  exclude:\n    - node_modules/**\n    - src/**\n    - test/**\n    - .git/**\n    - .serverless/**\n  include:\n    - node_modules/binary-case/** # Include missing module\n    - node_modules/@vendia/serverless-express/** # Include required AWS modules\n    - node_modules/aws-serverless-express/** \n    - node_modules/@nestjs/** # Include NestJS dependencies\n    - dist/**\n\nfunctions:\n  api:\n    handler: dist/lambda.handler\n    description: Task Management API powered by NestJS\n    events:\n      - http:\n          path: /api/{proxy+}\n          method: any\n          cors: true",
+    "serviceRawFile": "service: task-management-api\nplugins:\n  - serverless-offline\n  - serverless-dotenv-plugin\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  stage: dev\n  region: ap-south-1\n  memorySize: 2048\n  logRetentionInDays: 5\n  timeout: 30\n  environment:\n    DATABASE_URL: ${env:DATABASE_URL}\n    PRISMA_CLI_BINARY_TARGETS: ${env:PRISMA_CLI_BINARY_TARGETS}\n\nfunctions:\n  api:\n    handler: dist/lambda.handler\n    events:\n      - http:\n          method: any\n          path: /{proxy+}\n          cors: true\n\n# only include the Prisma binary required on AWS Lambda while packaging\npackage:\n  patterns:\n    - '!node_modules/.prisma/client/libquery_engine-*'\n    - 'node_modules/.prisma/client/libquery_engine-rhel-*'\n    - '!node_modules/prisma/libquery_engine-*'\n    - '!node_modules/@prisma/engines/**'\n    - 'node_modules/@prisma/client/**'",
     "command": [
       "deploy"
     ],
@@ -828,20 +797,20 @@
     "userName": "fantompaly",
     "serviceProviderAwsAccountId": "730335384436",
     "serviceProviderAwsCfStackName": "task-management-api-dev",
-    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:ap-south-1:730335384436:stack/task-management-api-dev/a16c1390-e54a-11ef-b2f1-02bf18b0aebb",
-    "serviceProviderAwsCfStackCreated": "2025-02-07T11:56:57.769Z",
-    "serviceProviderAwsCfStackUpdated": "2025-02-07T12:27:29.344Z",
-    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:ap-south-1:730335384436:stack/task-management-api-dev/d197f130-e651-11ef-b415-066a08753c8d",
+    "serviceProviderAwsCfStackCreated": "2025-02-08T19:20:55.572Z",
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": "CREATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "ApiLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:ap-south-1:730335384436:function:task-management-api-dev-api:4",
+        "OutputValue": "arn:aws:lambda:ap-south-1:730335384436:function:task-management-api-dev-api:8",
         "Description": "Current Lambda function version",
         "ExportName": "sls-task-management-api-dev-ApiLambdaFunctionQualifiedArn"
       },
       {
         "OutputKey": "ServiceEndpoint",
-        "OutputValue": "https://jeehsok6zc.execute-api.ap-south-1.amazonaws.com/dev",
+        "OutputValue": "https://y86aal8k6g.execute-api.ap-south-1.amazonaws.com/dev",
         "Description": "URL of the service endpoint",
         "ExportName": "sls-task-management-api-dev-ServiceEndpoint"
       },
@@ -858,7 +827,8 @@
         "ApiLogGroup": {
           "Type": "AWS::Logs::LogGroup",
           "Properties": {
-            "LogGroupName": "/aws/lambda/task-management-api-dev-api"
+            "LogGroupName": "/aws/lambda/task-management-api-dev-api",
+            "RetentionInDays": 5
           }
         },
         "IamRoleLambdaExecution": {
@@ -944,18 +914,18 @@
           "Properties": {
             "Code": {
               "S3Bucket": "serverless-framework-deployments-ap-south-1-2ed0840c-c696",
-              "S3Key": "serverless/task-management-api/dev/1738931408574-2025-02-07T12:30:08.574Z/api.zip"
+              "S3Key": "serverless/task-management-api/dev/1739042434354-2025-02-08T19:20:34.354Z/task-management-api.zip"
             },
             "Handler": "dist/lambda.handler",
             "Runtime": "nodejs20.x",
             "FunctionName": "task-management-api-dev-api",
             "MemorySize": 2048,
-            "Timeout": 20,
-            "Description": "Task Management API powered by NestJS",
+            "Timeout": 30,
             "Environment": {
               "Variables": {
-                "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require",
-                "NODE_ENV": "development"
+                "DATABASE_URL": "postgresql://neondb_owner:npg_JiAFML4sYvd2@ep-raspy-mouse-a8q4owtp-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&connection_limit=1",
+                "PRISMA_CLI_BINARY_TARGETS": "native,rhel-openssl-1.0.x",
+                "PORT": "4000"
               }
             },
             "Role": {
@@ -969,15 +939,14 @@
             "ApiLogGroup"
           ]
         },
-        "ApiLambdaVersionRJdasWDH4oJFhsjWXnZUSc0UasByM9ZbN8X5Dc4BYmU": {
+        "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc": {
           "Type": "AWS::Lambda::Version",
           "DeletionPolicy": "Retain",
           "Properties": {
             "FunctionName": {
               "Ref": "ApiLambdaFunction"
             },
-            "CodeSha256": "zE8qdhh//eZNcfC6Bq4aqmtvJcEKFwpuTAPcSEg05qk=",
-            "Description": "Task Management API powered by NestJS"
+            "CodeSha256": "YTwLCSXBfst/YpV9UeJL6D2IJFIkp8XIbNAtEsQYKb0="
           }
         },
         "ApiGatewayRestApi": {
@@ -992,7 +961,7 @@
             "Policy": ""
           }
         },
-        "ApiGatewayResourceApi": {
+        "ApiGatewayResourceProxyVar": {
           "Type": "AWS::ApiGateway::Resource",
           "Properties": {
             "ParentId": {
@@ -1001,25 +970,13 @@
                 "RootResourceId"
               ]
             },
-            "PathPart": "api",
-            "RestApiId": {
-              "Ref": "ApiGatewayRestApi"
-            }
-          }
-        },
-        "ApiGatewayResourceApiProxyVar": {
-          "Type": "AWS::ApiGateway::Resource",
-          "Properties": {
-            "ParentId": {
-              "Ref": "ApiGatewayResourceApi"
-            },
             "PathPart": "{proxy+}",
             "RestApiId": {
               "Ref": "ApiGatewayRestApi"
             }
           }
         },
-        "ApiGatewayMethodApiProxyVarOptions": {
+        "ApiGatewayMethodProxyVarOptions": {
           "Type": "AWS::ApiGateway::Method",
           "Properties": {
             "AuthorizationType": "NONE",
@@ -1057,20 +1014,20 @@
               ]
             },
             "ResourceId": {
-              "Ref": "ApiGatewayResourceApiProxyVar"
+              "Ref": "ApiGatewayResourceProxyVar"
             },
             "RestApiId": {
               "Ref": "ApiGatewayRestApi"
             }
           }
         },
-        "ApiGatewayMethodApiProxyVarAny": {
+        "ApiGatewayMethodProxyVarAny": {
           "Type": "AWS::ApiGateway::Method",
           "Properties": {
             "HttpMethod": "ANY",
             "RequestParameters": {},
             "ResourceId": {
-              "Ref": "ApiGatewayResourceApiProxyVar"
+              "Ref": "ApiGatewayResourceProxyVar"
             },
             "RestApiId": {
               "Ref": "ApiGatewayRestApi"
@@ -1110,7 +1067,7 @@
             "ApiLambdaPermissionApiGateway"
           ]
         },
-        "ApiGatewayDeployment1738931402020": {
+        "ApiGatewayDeployment1739042424170": {
           "Type": "AWS::ApiGateway::Deployment",
           "Properties": {
             "RestApiId": {
@@ -1119,8 +1076,8 @@
             "StageName": "dev"
           },
           "DependsOn": [
-            "ApiGatewayMethodApiProxyVarOptions",
-            "ApiGatewayMethodApiProxyVarAny"
+            "ApiGatewayMethodProxyVarOptions",
+            "ApiGatewayMethodProxyVarAny"
           ]
         },
         "ApiLambdaPermissionApiGateway": {
@@ -1171,7 +1128,7 @@
         "ApiLambdaFunctionQualifiedArn": {
           "Description": "Current Lambda function version",
           "Value": {
-            "Ref": "ApiLambdaVersionRJdasWDH4oJFhsjWXnZUSc0UasByM9ZbN8X5Dc4BYmU"
+            "Ref": "ApiLambdaVersion33mvSGnGTdJNt3Hl7HjAFxrFwat5kNjpqMgwR4rmc"
           },
           "Export": {
             "Name": "sls-task-management-api-dev-ApiLambdaFunctionQualifiedArn"

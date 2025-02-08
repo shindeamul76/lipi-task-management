@@ -54,3 +54,40 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Node Modules
+node_modules/
+yarn.lock
+package-lock.json
+
+# Serverless Framework Build Artifacts
+.serverless/
+*.zip  # Ignore all generated ZIP files
+
+# TypeScript Build Output
+dist/
+
+# Environment Variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Prisma Generated Files
+prisma/.cache/
+prisma/migrations/
+prisma/dev.db
+prisma/dev.db-journal
+prisma/.env
+prisma/generated/
+node_modules/.prisma/
+
+# AWS SAM or CDK (if used)
+.aws-sam/
+cdk.out/
+
+# Log Files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
