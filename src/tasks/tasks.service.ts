@@ -83,6 +83,7 @@ export class TasksService {
 
       return E.right(updatedTask);
     } catch (error) {
+      console.log(error, "error")
       return E.left(<RESTError>{
         message: TASK_UPDATE_FAILED,
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -95,19 +96,27 @@ export class TasksService {
    */
   async markTaskComplete(id: number) {
     try {
+      if (isNaN(id)) {
+        return E.left(<RESTError>{
+          message: "Invalid task ID",
+          statusCode: HttpStatus.BAD_REQUEST,
+        });
+      }
+  
       const task = await this.prisma.task.findUnique({ where: { id } });
+  
       if (!task)
         return E.left(<RESTError>{
           message: TASK_NOT_FOUND,
           statusCode: HttpStatus.NOT_FOUND,
         });
-
+  
       if (task.status === TaskStatus.COMPLETED)
         return E.left(<RESTError>{
           message: TASK_ALREADY_COMPLETED,
           statusCode: HttpStatus.BAD_REQUEST,
         });
-
+  
       const completedTask = await this.prisma.task.update({
         where: { id },
         data: {
@@ -115,9 +124,10 @@ export class TasksService {
           completed_at: new Date(),
         },
       });
-
+  
       return E.right(completedTask);
     } catch (error) {
+      console.error("Error in markTaskComplete:", error);
       return E.left(<RESTError>{
         message: TASK_COMPLETION_FAILED,
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -130,13 +140,20 @@ export class TasksService {
    */
   async deleteTask(id: number) {
     try {
+      if (isNaN(id)) {
+        return E.left(<RESTError>{
+          message: "Invalid task ID",
+          statusCode: HttpStatus.BAD_REQUEST,
+        });
+      }
+  
       const task = await this.prisma.task.findUnique({ where: { id } });
       if (!task)
         return E.left(<RESTError>{
           message: TASK_NOT_FOUND,
           statusCode: HttpStatus.NOT_FOUND,
         });
-
+  
       await this.prisma.task.delete({ where: { id } });
       return E.right(task);
     } catch (error) {
@@ -159,6 +176,27 @@ export class TasksService {
       return TaskStatus.PENDING;
     } catch (error) {
       throw new Error(TASK_STATUS_CALCULATION_FAILED);
+    }
+  }
+
+
+  async searchTasks(keyword: string) {
+    try {
+      const tasks = await this.prisma.task.findMany({
+        where: {
+          OR: [
+            { title: { contains: keyword, mode: 'insensitive' } },
+            { description: { contains: keyword, mode: 'insensitive' } },
+          ],
+        },
+      });
+  
+      return E.right(tasks);
+    } catch (error) {
+      return E.left(<RESTError>{
+        message: TASK_FETCH_FAILED,
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 }
