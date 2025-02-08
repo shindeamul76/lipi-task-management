@@ -16,10 +16,13 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
+      - name: Set Prisma CLI Binary Targets
+        run: echo "PRISMA_CLI_BINARY_TARGETS=rhel-openssl-3.0.x" >> $GITHUB_ENV
+
       - name: Generate Prisma Client
         run: yarn prisma generate
         env:
-          PRISMA_CLI_BINARY_TARGETS: native,rhel-openssl-1.0.x
+          PRISMA_CLI_BINARY_TARGETS: rhel-openssl-3.0.x
 
       - name: Deploy to AWS using Serverless Framework
         run: yarn serverless deploy
@@ -27,4 +30,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          PRISMA_CLI_BINARY_TARGETS: native,rhel-openssl-1.0.x  
+          PRISMA_CLI_BINARY_TARGETS: rhel-openssl-3.0.x 
