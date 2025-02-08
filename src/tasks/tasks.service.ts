@@ -14,12 +14,14 @@ import {
   TASK_FETCH_FAILED,
   TASK_STATUS_CALCULATION_FAILED,
   TASK_ALREADY_COMPLETED,
+  ERROR_WHILE_DATABASE_OPERATION,
 } from '../errors';
 import { TaskStatus } from 'src/types/TaskStatusEnum';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class TasksService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   /**
    * Create a new task
@@ -37,6 +39,13 @@ export class TasksService {
       });
       return E.right(task);
     } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        return E.left(<RESTError>{
+          message: ERROR_WHILE_DATABASE_OPERATION,
+          statusCode: HttpStatus.NOT_FOUND,
+        });
+      }
+
       return E.left(<RESTError>{
         message: TASK_CREATION_FAILED,
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -57,6 +66,12 @@ export class TasksService {
         })),
       );
     } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        return E.left(<RESTError>{
+          message: ERROR_WHILE_DATABASE_OPERATION,
+          statusCode: HttpStatus.NOT_FOUND,
+        });
+      }
       return E.left(<RESTError>{
         message: TASK_FETCH_FAILED,
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -84,6 +99,12 @@ export class TasksService {
       return E.right(updatedTask);
     } catch (error) {
       console.log(error, "error")
+      if (error instanceof PrismaClientKnownRequestError) {
+        return E.left(<RESTError>{
+          message: ERROR_WHILE_DATABASE_OPERATION,
+          statusCode: HttpStatus.NOT_FOUND,
+        });
+      }
       return E.left(<RESTError>{
         message: TASK_UPDATE_FAILED,
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -102,21 +123,21 @@ export class TasksService {
           statusCode: HttpStatus.BAD_REQUEST,
         });
       }
-  
+
       const task = await this.prisma.task.findUnique({ where: { id } });
-  
+
       if (!task)
         return E.left(<RESTError>{
           message: TASK_NOT_FOUND,
           statusCode: HttpStatus.NOT_FOUND,
         });
-  
+
       if (task.status === TaskStatus.COMPLETED)
         return E.left(<RESTError>{
           message: TASK_ALREADY_COMPLETED,
           statusCode: HttpStatus.BAD_REQUEST,
         });
-  
+
       const completedTask = await this.prisma.task.update({
         where: { id },
         data: {
@@ -124,10 +145,17 @@ export class TasksService {
           completed_at: new Date(),
         },
       });
-  
+
       return E.right(completedTask);
     } catch (error) {
+
       console.error("Error in markTaskComplete:", error);
+      if (error instanceof PrismaClientKnownRequestError) {
+        return E.left(<RESTError>{
+          message: ERROR_WHILE_DATABASE_OPERATION,
+          statusCode: HttpStatus.NOT_FOUND,
+        });
+      }
       return E.left(<RESTError>{
         message: TASK_COMPLETION_FAILED,
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -146,17 +174,23 @@ export class TasksService {
           statusCode: HttpStatus.BAD_REQUEST,
         });
       }
-  
+
       const task = await this.prisma.task.findUnique({ where: { id } });
       if (!task)
         return E.left(<RESTError>{
           message: TASK_NOT_FOUND,
           statusCode: HttpStatus.NOT_FOUND,
         });
-  
+
       await this.prisma.task.delete({ where: { id } });
       return E.right(task);
     } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        return E.left(<RESTError>{
+          message: ERROR_WHILE_DATABASE_OPERATION,
+          statusCode: HttpStatus.NOT_FOUND,
+        });
+      }
       return E.left(<RESTError>{
         message: TASK_DELETION_FAILED,
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -190,9 +224,15 @@ export class TasksService {
           ],
         },
       });
-  
+
       return E.right(tasks);
     } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        return E.left(<RESTError>{
+          message: ERROR_WHILE_DATABASE_OPERATION,
+          statusCode: HttpStatus.NOT_FOUND,
+        });
+      }
       return E.left(<RESTError>{
         message: TASK_FETCH_FAILED,
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
